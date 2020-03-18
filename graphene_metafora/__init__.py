@@ -1,1 +1,1 @@
-from .types import InputObjectType
+from .types import InputObjectType, Queries

@@ -1,6 +1,7 @@
 import graphene
+from graphene.pyutils.init_subclass import InitSubclassMeta
 
-from .features import changes, required
+from .features import changes, ordering, required
 from .options import InputObjectOptions
 from .utils import (
     get_fields,
@@ -32,11 +33,11 @@ class InputObjectType(graphene.InputObjectType):
         for field_name, field in own_fields.items():
             setattr(cls, field_name, field)
 
-    @classmethod
-    def apply_converters(cls, input_data):
-        prepared_data = {}
-        for field, value in input_data.items():
-            func = cls.data_converters.get(field)
-            prepared_data[field] = func(value) if func else value
 
-        return prepared_data
+class Queries(metaclass=InitSubclassMeta):
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        meta = get_metafora_cls(cls)
+        if meta:
+            fields = get_fields(cls)
+            ordering.enable_ordering(cls, meta, fields)
