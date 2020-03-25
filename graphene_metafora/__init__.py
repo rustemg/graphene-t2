@@ -1,1 +1,1 @@
-from .types import InputObjectType, Queries
+from .types import DjangoObjectType, InputObjectType, Queries

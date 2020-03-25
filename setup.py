@@ -23,5 +23,6 @@ setuptools.setup(
     keywords='api graphql graphene',
     install_requires=[
         'graphene>=2.1.7,<3',
+        'graphene-django>=2.8,<3',
     ],
 )
