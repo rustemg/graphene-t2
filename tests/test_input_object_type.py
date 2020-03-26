@@ -10,19 +10,19 @@ class Parent(InputObjectType):
 
 class ChildAll(Parent):
     class Metafora:
-        required = {True: '__all__'}
+        required = {True: "__all__"}
 
 
 class ChildByField(Parent):
     class Metafora:
-        required = {True: ['field2']}
+        required = {True: ["field2"]}
 
 
 def test_required_all():
-    assert ChildAll.field1.kwargs['required']
-    assert ChildAll.field2.kwargs['required']
+    assert ChildAll.field1.kwargs["required"]
+    assert ChildAll.field2.kwargs["required"]
 
 
 def test_required_by_field():
-    assert not ChildByField.field1.kwargs.get('required', False)
-    assert ChildByField.field2.kwargs['required']
+    assert not ChildByField.field1.kwargs.get("required", False)
+    assert ChildByField.field2.kwargs["required"]
