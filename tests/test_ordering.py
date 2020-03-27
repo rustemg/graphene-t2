@@ -1,6 +1,6 @@
 import graphene
 
-from graphene_t2 import DjangoObjectType, Queries
+from graphene_t2 import DjangoObjectType, QueriesType
 
 from tests.data.models import Organization
 
@@ -15,7 +15,7 @@ class OrganizationType(DjangoObjectType):
         default_ordering = "-registration_date"
 
 
-class Query(Queries):
+class Query(QueriesType):
     class T2Meta:
         enable_ordering_for = "__auto__"
 

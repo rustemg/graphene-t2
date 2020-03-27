@@ -1,5 +1,6 @@
 from functools import wraps
 
+from django.db.models import QuerySet
 from graphene import List, String
 
 from ..utils import get_resolver, get_t2meta_obj
@@ -25,7 +26,11 @@ def _orderator(options):
         def wrapper(*args, **kwargs):
             ordering = kwargs.pop(_ARG_NAME, options.default_ordering)
             qs = func(*args, **kwargs)
-            if ordering and options.validate_ordering(ordering):
+            if (
+                isinstance(qs, QuerySet)
+                and ordering
+                and options.validate_ordering(ordering)
+            ):
                 qs = qs.order_by(*ordering)
             return qs
 

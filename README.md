@@ -74,7 +74,7 @@ class Model3Type(DjangoObjectType):
            default_ordering = '-date_created', 'name' # или ['-date_created', 'name']
 ```
 
-Класс с объявлением методов нужно отнаследовать от `graphene_t2.Queries`, объявить вложенный класс `T2Meta`.
+Класс с объявлением методов нужно отнаследовать от `graphene_t2.QueriesType`, объявить вложенный класс `T2Meta`.
 Внутри объявить переменную `enable_ordering_for`. 
 
 Возможны два вида значения:
@@ -85,10 +85,10 @@ class Model3Type(DjangoObjectType):
 
 
 ```python
-from graphene_t2 import Queries
+from graphene_t2 import QueriesType
 
 
-class Query1(Queries):
+class Query1(QueriesType):
     class T2Meta:
         enable_ordering_for = '__auto__'
     
@@ -99,7 +99,7 @@ class Query1(Queries):
     
 
 
-class Query2(Queries):
+class Query2(QueriesType):
     class T2Meta:
         enable_ordering_for = ['items']
     

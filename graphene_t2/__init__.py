@@ -1,1 +1,2 @@
-from .types import DjangoObjectType, InputObjectType, Queries
+from .features.changes import Alter, Deprecate
+from .types import DjangoObjectType, InputObjectType, QueriesType

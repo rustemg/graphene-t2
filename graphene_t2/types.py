@@ -25,6 +25,17 @@ def _init_options(cls, options_cls):
 
 
 class InputObjectType(graphene.InputObjectType):
+    data_converters = {}
+
+    @classmethod
+    def apply_converters(cls, input_data):
+        prepared_data = {}
+        for field, value in input_data.items():
+            func = cls.data_converters.get(field)
+            prepared_data[field] = func(value) if func else value
+
+        return prepared_data
+
     @classmethod
     def __init_subclass_with_meta__(cls, container=None, _meta=None, **options):
         cls._handle_t2meta(InputObjectOptions)
@@ -44,7 +55,7 @@ class InputObjectType(graphene.InputObjectType):
             setattr(cls, field_name, field)
 
 
-class Queries(metaclass=InitSubclassMeta):
+class QueriesType(metaclass=InitSubclassMeta):
     def __init_subclass__(cls):
         opts = _init_options(cls, QueriesOptions)
         fields = get_fields(cls)

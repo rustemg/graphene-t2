@@ -18,3 +18,7 @@ format:
 
 .PHONY: fmt
 fmt:: format
+
+.PHONY: build
+build:
+	python setup.py sdist bdist_wheel
