@@ -1,6 +1,6 @@
 import graphene
 
-from graphene_metafora import DjangoObjectType, Queries
+from graphene_t2 import DjangoObjectType, Queries
 
 from tests.data.models import Organization
 
@@ -10,13 +10,13 @@ class OrganizationType(DjangoObjectType):
         model = Organization
         fields = ("id", "full_name", "registration_date")
 
-    class Metafora:
+    class T2Meta:
         can_order_by = "id", "registration_date"
         default_ordering = "-registration_date"
 
 
 class Query(Queries):
-    class Metafora:
+    class T2Meta:
         enable_ordering_for = "__auto__"
 
     organizations = graphene.List(OrganizationType)

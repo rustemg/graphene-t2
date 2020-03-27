@@ -6,14 +6,14 @@
 ## Обязательные поля в инпутах
 ```python
 import graphene
-from graphene_metafora import InputObjectType
+from graphene_t2 import InputObjectType
 
 class AddSomethingInput(InputObjectType):
     field1 = graphene.String(required=True)
     field2 = graphene.String(required=True)
 
 class EditSomethingInput(AddSomethingInput):
-    class Metafora:
+    class T2Meta:
         required = {
             False: '__all__', # или список полей
             True: ['id'],
@@ -31,11 +31,11 @@ class EditSomethingInput(AddSomethingInput):
 Автоматически изменяет описание полей. Может использоваться для генерации документации.
 ```python
 import graphene
-from graphene_metafora import InputObjectType
-from graphene_metafora.features.changes import Alter, Deprecate
+from graphene_t2 import InputObjectType
+from graphene_t2.features.changes import Alter, Deprecate
 
 class SomeInputType(InputObjectType):
-    class Metafora:
+    class T2Meta:
         changes = [
             Deprecate('legacy_field1', '03/20', replaced_by='new_field1'),
             Deprecate('legacy_field2', '02/20', comment='Не используется'),
@@ -50,7 +50,7 @@ class SomeInputType(InputObjectType):
 
 
 ## Сортировка (`ordering.py`)
-В классе-нследнике `ObjectType` нужно объявить класс `Metafora`.
+В классе-нследнике `ObjectType` нужно объявить класс `T2Meta`.
 Внутри него можно создать две переменные:
 1. `can_order_by` - обязательный, список с названием полей, по которым можно производить сортировку;
 2. `default_ordering` - необязательный, сортировка по-умолчанию, строка или список строк с названием полей.
@@ -58,23 +58,23 @@ class SomeInputType(InputObjectType):
 Примеры:
 ```python
 class Model1Type(DjangoObjectType):
-       class Metafora:
+       class T2Meta:
            can_order_by = ['id']
 
 
 class Model2Type(DjangoObjectType):
-       class Metafora:
+       class T2Meta:
            can_order_by = ['id']
            default_ordering = 'id' # или '-id'
 
 
 class Model3Type(DjangoObjectType):
-       class Metafora:
+       class T2Meta:
            can_order_by = ['id', 'name', 'date_created']
            default_ordering = '-date_created', 'name' # или ['-date_created', 'name']
 ```
 
-Класс с объявлением методов нужно отнаследовать от `graphene_metafora.Queries`, объявить вложенный класс `Metafora`.
+Класс с объявлением методов нужно отнаследовать от `graphene_t2.Queries`, объявить вложенный класс `T2Meta`.
 Внутри объявить переменную `enable_ordering_for`. 
 
 Возможны два вида значения:
@@ -85,11 +85,11 @@ class Model3Type(DjangoObjectType):
 
 
 ```python
-from graphene_metafora import Queries
+from graphene_t2 import Queries
 
 
 class Query1(Queries):
-    class Metafora:
+    class T2Meta:
         enable_ordering_for = '__auto__'
     
     items = graphene.List(Model1Type)
@@ -100,7 +100,7 @@ class Query1(Queries):
 
 
 class Query2(Queries):
-    class Metafora:
+    class T2Meta:
         enable_ordering_for = ['items']
     
     items = graphene.List(Model1Type)

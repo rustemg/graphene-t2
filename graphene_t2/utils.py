@@ -1,18 +1,21 @@
 from graphene import Argument, Field, InputField, List, Scalar
 
-
-def get_metafora_cls(cls):
-    return getattr(cls, "Metafora", None)
-
-
-def get_metafora_obj(cls):
-    return getattr(cls, "_metafora", None)
+_META_CLS_NAME = "T2Meta"
+_META_OBJ_NAME = "_t2meta"
 
 
-def metafora_cls_to_obj(cls, opts):
-    if hasattr(cls, "Metafora"):
-        delattr(cls, "Metafora")
-    setattr(cls, "_metafora", opts)
+def get_t2meta_cls(cls):
+    return getattr(cls, _META_CLS_NAME, None)
+
+
+def get_t2meta_obj(cls):
+    return getattr(cls, _META_OBJ_NAME, None)
+
+
+def t2meta_cls_to_obj(cls, opts):
+    if hasattr(cls, _META_CLS_NAME):
+        delattr(cls, _META_CLS_NAME)
+    setattr(cls, _META_OBJ_NAME, opts)
 
 
 def get_resolver(cls, field_name):

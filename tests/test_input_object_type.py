@@ -1,6 +1,6 @@
 import graphene
 
-from graphene_metafora import InputObjectType
+from graphene_t2 import InputObjectType
 
 
 class Parent(InputObjectType):
@@ -9,12 +9,12 @@ class Parent(InputObjectType):
 
 
 class ChildAll(Parent):
-    class Metafora:
+    class T2Meta:
         required = {True: "__all__"}
 
 
 class ChildByField(Parent):
-    class Metafora:
+    class T2Meta:
         required = {True: ["field2"]}
 
 

@@ -2,7 +2,7 @@ from functools import wraps
 
 from graphene import List, String
 
-from ..utils import get_resolver, get_metafora_obj
+from ..utils import get_resolver, get_t2meta_obj
 
 _ARG_NAME = "sort_by"
 
@@ -36,7 +36,7 @@ def _orderator(options):
 
 def _decorate_resolver(cls, fields, field_name):
     field = fields[field_name]
-    options = field.of_type._metafora
+    options = get_t2meta_obj(field.of_type)
     resolver = get_resolver(cls, field_name)
     decorated = _orderator(options)(resolver)
     setattr(cls, resolver.__name__, decorated)
@@ -51,7 +51,7 @@ def _search_supported_items(fields):
     for name, field in fields.items():
         if not isinstance(field, List):
             continue
-        meta = get_metafora_obj(field.of_type)
+        meta = get_t2meta_obj(field.of_type)
         if meta and hasattr(meta, "can_order_by"):
             items.append(name)
 

@@ -1,4 +1,4 @@
-from .utils import get_metafora_cls
+from .utils import get_t2meta_cls
 
 
 class BaseOptions:

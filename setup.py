@@ -12,7 +12,7 @@ with open("README.md", "r") as fh:
 dev_requires = ["black==19.10b0",] + tests_require
 
 setuptools.setup(
-    name="graphene-metafora",
+    name="graphene-t2",
     version="0.0.1",
     author="Röstäm Gazizov",
     author_email="gazizov@tn.ru",
@@ -20,7 +20,7 @@ setuptools.setup(
     description="An extension for graphene",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/rustemg/graphene-metafora",
+    url="https://github.com/rustemg/graphene-t2",
     packages=setuptools.find_packages(exclude=["tests*"]),
     classifiers=[
         "Development Status :: 3 - Alpha",

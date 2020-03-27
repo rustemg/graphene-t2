@@ -14,7 +14,7 @@ test: tests  # Alias test -> tests
 
 .PHONY: format
 format:
-	black graphene_metafora tests setup.py
+	black graphene_t2 tests setup.py
 
 .PHONY: fmt
 fmt:: format

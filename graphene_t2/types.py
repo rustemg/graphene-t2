@@ -10,28 +10,28 @@ from .options import (
 )
 from .utils import (
     get_fields,
-    get_metafora_cls,
-    get_metafora_obj,
-    metafora_cls_to_obj,
+    get_t2meta_cls,
+    get_t2meta_obj,
+    t2meta_cls_to_obj,
 )
 
 
 def _init_options(cls, options_cls):
-    super_opts = get_metafora_obj(cls)
-    metafora_cls = get_metafora_cls(cls)
-    opts = options_cls.from_meta(metafora_cls).merge(super_opts)
-    metafora_cls_to_obj(cls, opts)
+    super_opts = get_t2meta_obj(cls)
+    t2meta_cls = get_t2meta_cls(cls)
+    opts = options_cls.from_meta(t2meta_cls).merge(super_opts)
+    t2meta_cls_to_obj(cls, opts)
     return opts
 
 
 class InputObjectType(graphene.InputObjectType):
     @classmethod
     def __init_subclass_with_meta__(cls, container=None, _meta=None, **options):
-        cls._handle_metafora(InputObjectOptions)
+        cls._handle_t2meta(InputObjectOptions)
         super().__init_subclass_with_meta__(container, _meta, **options)
 
     @classmethod
-    def _handle_metafora(cls, options_cls):
+    def _handle_t2meta(cls, options_cls):
         opts = _init_options(cls, options_cls)
         if opts.abstract:
             return
