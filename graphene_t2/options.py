@@ -54,10 +54,17 @@ class OrderingOptionsMixin:
 
 
 class InputObjectOptions(BaseOptions):
-    def __init__(self, abstract=False, changes=None, required=None):
+    def __init__(self, abstract=False, changes=None, required=None, model=None):
         super().__init__(changes)
         self.abstract = abstract
         self.required = required or {}
+        self.model = model
+
+    def merge(self, super_opts):
+        super().merge(super_opts)
+        if not self.model and super_opts and super_opts.abstract:
+            self.model = super_opts.model
+        return self
 
 
 class DjangoObjectTypeOptions(OrderingOptionsMixin, BaseOptions):

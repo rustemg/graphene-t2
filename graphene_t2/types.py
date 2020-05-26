@@ -2,7 +2,7 @@ import graphene
 import graphene_django
 from graphene.pyutils.init_subclass import InitSubclassMeta
 
-from .features import changes, ordering, required
+from .features import changes, ordering, required, model_info
 from .options import (
     DjangoObjectTypeOptions,
     InputObjectOptions,
@@ -49,6 +49,7 @@ class InputObjectType(graphene.InputObjectType):
 
         own_fields = {}
         fields = get_fields(cls)
+        model_info.update_description(opts, fields, own_fields)
         changes.update_description(opts, fields, own_fields)
         required.apply_required(opts, fields, own_fields)
         for field_name, field in own_fields.items():
