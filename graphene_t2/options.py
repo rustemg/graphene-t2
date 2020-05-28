@@ -54,11 +54,15 @@ class OrderingOptionsMixin:
 
 
 class InputObjectOptions(BaseOptions):
-    def __init__(self, abstract=False, changes=None, required=None, model=None):
+    def __init__(
+        self, abstract=False, changes=None, required=None, model=None, fields=None
+    ):
         super().__init__(changes)
         self.abstract = abstract
         self.required = required or {}
         self.model = model
+        self.fields = fields
+        assert not fields or model
 
     def merge(self, super_opts):
         super().merge(super_opts)

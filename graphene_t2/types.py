@@ -49,6 +49,7 @@ class InputObjectType(graphene.InputObjectType):
 
         own_fields = {}
         fields = get_fields(cls)
+        model_info.create_fields(opts, fields, own_fields)
         model_info.update_description(opts, fields, own_fields)
         changes.update_description(opts, fields, own_fields)
         required.apply_required(opts, fields, own_fields)

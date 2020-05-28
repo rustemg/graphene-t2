@@ -1,7 +1,9 @@
 from copy import deepcopy
 
+import graphene
 from django.core.exceptions import FieldDoesNotExist
-from django.db.models import CharField, Model, TextField
+from django.db.models import CharField, ForeignKey, Model, TextField
+from graphene_django.converter import convert_django_field
 
 
 def update_description(meta, fields, own_fields):
@@ -18,8 +20,8 @@ def update_description(meta, fields, own_fields):
             continue
 
         is_changed = False
-        field = fields[name]
-        if not hasattr(field, "kwargs"):
+        field = own_fields.get(name) or fields.get(name)
+        if not field or not hasattr(field, "kwargs"):
             continue
         description = field.kwargs.get("description", "")
         if not description:
@@ -35,3 +37,19 @@ def update_description(meta, fields, own_fields):
             field = own_fields.get(name) or deepcopy(fields[name])
             field.kwargs["description"] = description
             own_fields[name] = field
+
+
+def create_fields(meta, fields, own_fields):
+    if not (meta.fields and meta.model):
+        return
+
+    for name in meta.fields:
+        field = own_fields.get(name) or fields.get(name)
+        if field:
+            continue
+        model_field = meta.model._meta.get_field(name)
+        if isinstance(model_field, ForeignKey) and name.endswith("_id"):
+            field = graphene.ID()
+        else:
+            field = convert_django_field(model_field)
+        own_fields[name] = field
