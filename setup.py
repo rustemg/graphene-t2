@@ -13,7 +13,7 @@ dev_requires = ["black==19.10b0",] + tests_require
 
 setuptools.setup(
     name="graphene-t2",
-    version="0.1.0",
+    version="0.2.0",
     author="Röstäm Gazizov",
     author_email="gazizov@tn.ru",
     license="MIT",
