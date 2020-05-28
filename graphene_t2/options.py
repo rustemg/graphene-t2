@@ -57,12 +57,22 @@ class InputObjectOptions(BaseOptions):
     def __init__(
         self, abstract=False, changes=None, required=None, model=None, fields=None
     ):
+        assert not fields or model
         super().__init__(changes)
         self.abstract = abstract
         self.required = required or {}
         self.model = model
-        self.fields = fields
-        assert not fields or model
+        self.fields = None
+        self.required_fields = None
+        if not fields:
+            return
+        self.fields = []
+        self.required_fields = []
+        for name in fields:
+            if name.startswith("*"):
+                name = name[1:]
+                self.required_fields.append(name)
+            self.fields.append(name)
 
     def merge(self, super_opts):
         super().merge(super_opts)

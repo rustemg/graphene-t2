@@ -5,6 +5,8 @@ from django.core.exceptions import FieldDoesNotExist
 from django.db.models import CharField, ForeignKey, Model, TextField
 from graphene_django.converter import convert_django_field
 
+from . import required as feature_required
+
 
 def update_description(meta, fields, own_fields):
     if not meta.model:
@@ -53,3 +55,5 @@ def create_fields(meta, fields, own_fields):
         else:
             field = convert_django_field(model_field)
         own_fields[name] = field
+
+    feature_required.transform_fields(own_fields, fields, meta.required_fields, True)

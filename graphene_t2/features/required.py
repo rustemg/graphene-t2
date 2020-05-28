@@ -12,10 +12,10 @@ def apply_required(meta, fields, own_fields):
     for is_required, field_names in required_params.items():
         if field_names == "__all__":
             field_names = list(fields.keys())
-        _handle_fields(own_fields, fields, field_names, is_required)
+        transform_fields(own_fields, fields, field_names, is_required)
 
 
-def _handle_fields(own_fields, fields, field_names, is_required):
+def transform_fields(own_fields, fields, field_names, is_required):
     for name in field_names:
         field = own_fields.get(name) or deepcopy(fields[name])
         own_fields[name] = field
