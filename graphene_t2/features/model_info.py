@@ -5,6 +5,7 @@ from django.core.exceptions import FieldDoesNotExist
 from django.db.models import CharField, ForeignKey, Model, TextField
 from graphene_django.converter import convert_django_field
 
+from ..fields import ObjectID
 from . import required as feature_required
 
 
@@ -51,7 +52,9 @@ def create_fields(meta, fields, own_fields):
             continue
         model_field = meta.model._meta.get_field(name)
         if isinstance(model_field, ForeignKey) and name.endswith("_id"):
-            field = graphene.ID()
+            field = ObjectID(
+                description=model_field.help_text, required=not model_field.null
+            )
         else:
             field = convert_django_field(model_field)
         own_fields[name] = field
