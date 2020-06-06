@@ -85,7 +85,7 @@ class Mutate:
     def __call__(self, root, info, **kwargs):
         user = info.context.user
         input_data = kwargs["input"]
-        contract = self.contract_cls(**input_data)
+        contract = self.contract_cls.from_dict(input_data)
         return self.action(user, contract)
 
 
