@@ -76,6 +76,8 @@ class DjangoObjectType(graphene_django.DjangoObjectType):
 
 
 class Mutate:
+    __slots__ = ("action", "contract_cls")
+
     def __init__(self, action):
         self.action = action
         self.contract_cls = extract_contract_cls(action)
@@ -93,20 +95,14 @@ class Mutation(graphene.Mutation):
 
     @classmethod
     def __init_subclass_with_meta__(
-        cls,
-        interfaces=(),
-        resolver=None,
-        output=None,
-        arguments=None,
-        _meta=None,
-        **options
+        cls, interfaces=(), resolver=None, _meta=None, **options
     ):
-        cls._handle_t2meta(MutationOptions)
+        opts = _init_options(cls, MutationOptions)
+        cls.mutate = Mutate(opts.action)
+        output = opts.output_type
+        arguments = {"input": graphene.Argument(opts.input_type, required=True)}
+        if opts.description:
+            options["description"] = opts.description
         super().__init_subclass_with_meta__(
             interfaces, resolver, output, arguments, _meta, **options
         )
-
-    @classmethod
-    def _handle_t2meta(cls, options_cls):
-        opts = _init_options(cls, options_cls)
-        cls.mutate = Mutate(opts.action)

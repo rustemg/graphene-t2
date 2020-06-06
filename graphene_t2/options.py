@@ -94,5 +94,8 @@ class QueriesOptions(BaseOptions):
 
 
 class MutationOptions(BaseOptions):
-    def __init__(self, action):
+    def __init__(self, action, input_type, output_type, description=None):
         self.action = action
+        self.input_type = input_type
+        self.output_type = output_type
+        self.description = description
