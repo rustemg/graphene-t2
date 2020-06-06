@@ -31,3 +31,8 @@ def get_fields(cls):
         if isinstance(attr, (Argument, Field, InputField, List, Scalar)):
             fields[name] = attr
     return fields
+
+
+def extract_contract_cls(action):
+    contract_cls = action.__annotations__["contract"]
+    return contract_cls

@@ -91,3 +91,8 @@ class QueriesOptions(BaseOptions):
     def __init__(self, enable_ordering_for=None, changes=None):
         super().__init__(changes)
         self.enable_ordering_for = enable_ordering_for or []
+
+
+class MutationOptions(BaseOptions):
+    def __init__(self, action):
+        self.action = action

@@ -2,13 +2,15 @@ import graphene
 import graphene_django
 from graphene.pyutils.init_subclass import InitSubclassMeta
 
-from .features import changes, ordering, required, model_info
+from .features import changes, model_info, ordering, required
 from .options import (
     DjangoObjectTypeOptions,
     InputObjectOptions,
+    MutationOptions,
     QueriesOptions,
 )
 from .utils import (
+    extract_contract_cls,
     get_fields,
     get_t2meta_cls,
     get_t2meta_obj,
@@ -71,3 +73,40 @@ class DjangoObjectType(graphene_django.DjangoObjectType):
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
         opts = _init_options(cls, DjangoObjectTypeOptions)
+
+
+class Mutate:
+    def __init__(self, action):
+        self.action = action
+        self.contract_cls = extract_contract_cls(action)
+
+    def __call__(self, root, info, **kwargs):
+        user = info.context.user
+        input_data = kwargs["input"]
+        contract = self.contract_cls(**input_data)
+        return self.action(user, contract)
+
+
+class Mutation(graphene.Mutation):
+    class Meta:
+        abstract = True
+
+    @classmethod
+    def __init_subclass_with_meta__(
+        cls,
+        interfaces=(),
+        resolver=None,
+        output=None,
+        arguments=None,
+        _meta=None,
+        **options
+    ):
+        cls._handle_t2meta(MutationOptions)
+        super().__init_subclass_with_meta__(
+            interfaces, resolver, output, arguments, _meta, **options
+        )
+
+    @classmethod
+    def _handle_t2meta(cls, options_cls):
+        opts = _init_options(cls, options_cls)
+        cls.mutate = Mutate(opts.action)
