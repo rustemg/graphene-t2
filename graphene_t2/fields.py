@@ -3,5 +3,5 @@ import ast
 import graphene
 
 
-class ObjectID(graphene.ID):
+class ModelID(graphene.ID):
     parse_value = int
